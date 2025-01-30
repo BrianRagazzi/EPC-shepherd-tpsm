@@ -18,9 +18,12 @@ sheepctl lock get ${LOCKID} -j -o ${ENVNAME}-access.json
 ```
 sheepctl lock kubeconfig ${LOCKID} > ${ENVNAME}.kubeconfig
 ```
-## User/pass
+## User/pass for jumpbox
 username = kubo
 Password = sheepctl lock get ${LOCKID} -j |jq -r .outputs.vm.jumper.password
+
+## Password for vCenter (not pretty)
+Password = sheepctl lock get ${LOCKID}  | jq -r .vc[].password
 
 ## Get jumpbox IP
 ```
@@ -28,20 +31,33 @@ export JUMPERIP=$(sheepctl lock get ${LOCKID} -j |jq -r .outputs.vm.jumper.hostn
 ```
 
 # Login to jumpbox
-```
-ssh kubo@$JUMPERIP
-```
+
 
 ## Update DNSMasq
-/etc/dnsmasq.d/vlan-dhcp-dns.conf
 
-## Create .kube folder
-```
-mkdir -p ~/.kube
-```
+
+
 
 ## copy files from local to jumpbox - run on local machine where sheepctl is
 ```
-scp dnsmasq-install.sh kubo@$JUMPERIP:/home/kubo/
+scp resources/dnsmasq-install.sh kubo@$JUMPERIP:/home/kubo/
+scp resources/vmclass-tpsm.yaml kubo@$JUMPERIP:/home/kubo/
 scp ${ENVNAME}.kubeconfig kubo@$JUMPERIP:/home/kubo/.kube/config
 ```
+
+# Login to Jumpbox
+```
+ssh kubo@$JUMPERIP
+```
+* install dnsmasq
+```
+~/dns-masq-install.sh
+```
+* Create .kube folder - run on jumpbox
+```
+mkdir -p ~/.kube
+```
+*  connect to supervisor cluster
+
+
+ - run on jumpbox

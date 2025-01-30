@@ -1,0 +1,22 @@
+apiVersion: vmoperator.vmware.com/v1alpha2
+kind: VirtualMachineClass
+metadata:
+  name: tpsm
+spec:
+  configSpec:
+    _typeName: VirtualMachineConfigSpec
+    memoryMB: 32768
+    numCPUs: 8
+  hardware:
+    cpus: 8
+    devices: {}
+    instanceStorage: {}
+    memory: 32Gi
+  policies:
+    resources:
+      limits:
+        cpu: "0"
+        memory: "0"
+      requests:
+        cpu: "0"
+        memory: "0"
