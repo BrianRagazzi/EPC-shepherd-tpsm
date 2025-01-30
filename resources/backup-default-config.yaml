@@ -1,0 +1,164 @@
+# @copyright Copyright Broadcom. All Rights Reserved.
+# The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+# @license For licensing, see LICENSE.md.
+# Installation flavor. Use "full" to install everything in Tanzu Platform which includes essentials services along with K8s Ops, App Engine and build services.
+# Use "essentials" for installing essentials services of Tanzu Platform.
+flavor: full
+# Installation profile to use.  `evaluation` profile uses minimum
+# resources, disables autoscaling, and only uses a single replica.
+# `foundation` profile uses standard resource and autoscaling
+# configuration.
+profile: foundation
+# Version of Tanzu Platform Self Managed to install.  This should not normally
+# be changed.
+version: '10.0.0-oct-2024-rc.533-vc0bb325'
+# Kubernetes Ingress settings.
+ingress:
+  # Static IP address that needs to be assigned to contour load balancer
+  # The host associated with this IP will be used for accessing UI and other ingress objects.
+  # This is optional and If not provided, random IP address from available IP pool will be assigned
+  # to contour load balancer.
+  loadBalancerIP: ""
+  # DNS name that can reach the system.  If unset, and
+  # `controller` is enabled, then get the external name from
+  # the installed ingress controller.
+  host: ""
+  # TLS certificate configuration for the specified `host`
+  # If unset, the cluster will generate a self-signed certificate
+  # on its own.
+  tls:
+    certificate: ""
+    privateKey: ""
+#Deplyment settings
+deployment:
+  airGapped: false
+#Daedalus Settings
+trivy:
+  # Optional OCI repository to retrieve trivy-db from. Its url can be external or internal for airgapped deployment (default "ghcr.io/aquasecurity/trivy-db")
+  # This repositroy should be periodically synced from ghcr.io/aquasecurity/trivy-db to get latest vulnerability for airgapped deployment.
+  dbRepository: ""
+  # When using SSL/TLS, Trivy can be configured to allow insecure connections to a container registry if there is no valid certificate available
+  # Set allowInsecureConnections to true to allow insecure server connections; false, otherwise
+  allowInsecureConnections: false
+# Infra components
+postgresql:
+  storageClass: ""
+clickhouse:
+  storageClass: ""
+redis:
+  storageClass: ""
+opensearch:
+  storageClass: ""
+seaweedfsS3:
+  storageClass: ""
+prometheus:
+  storageClass: ""
+  tmcStorageClass: ""
+kafka:
+  storageClass: ""
+zookeeper:
+  storageClass: ""
+# Image registry settings used as service parameters. values will be automatically generated.
+imageRegistry:
+  server: ""
+  username: ""
+  password: ""
+#Custom Registry certificate, used in Kapp controller. Certificate string should be provided using string literal style (|) to perserve newline characters.
+CustomRegistryCertificate: ""
+#Version control systems (gitlab or github) certificates. Certificate string should be provided using string literal style (|) to perserve newline characters.
+versionControlSystemCertificate: ""
+#Tanzu platform login details
+login:
+  # login operation timeout in seconds, default 60 seconds
+  timeout: 60
+  # Default in built user details for login into the Tanzu Platform
+  defaultUsers:
+    #Tanzu Platform Admin Details, username: tanzu_platform_admin
+    admin:
+      #Tanzu Platform Admin  Password, Random password will be generated if empty value provided
+      #Note that this password cannot be changed later, its one time set ( both system generated and user provided one)
+      password: ""
+      ##### --------------------------------*************************-----------------------------------------######
+      ##### --------------------------------*************************-----------------------------------------######
+      ##### ------ You can provide both oauth provider and ldap for the users to login into TP or any one ----######
+      ##### ------ of them but at-least one need to be provided. Please remove/comment out the oauth ---------######
+      ##### ------ providers section if you are not using oauth and similarly remove/comment out the ---------######
+      ##### ------ out the ldap section if you are not using ldap. -------------------------------------------######
+      ##### --------------------------------*************************-----------------------------------------######
+      ##### --------------------------------*************************-----------------------------------------######
+      #OIDC/Oauth servers details, the config supports multiple oauth providers but the recommendation is 1
+#  oauthProviders:
+#    #Unique name for this oauth server configuration
+#    - name: ""
+#      #Certificate of the oauth server if needs to connect over ssl
+#      #Remove this field if it needs to connect over plain http protocol
+#      certificate: ""
+#      #OpenId configuration url of the oauth provider i.e url of .well-known/openid-configuration api endpoint
+#      configUrl: ""
+#      #Issuer url of the oauth Provider
+#      issuerUrl: ""
+#      #Scopes list which are needed to fetch the user information(email, groups) from oauth provider, openId is must
+#      scopes: ["openid"]
+#      #Link name to be shown for this oauth provider in TP login page
+#      loginPageLinkText: ""
+#      #Client Id to connect to oauth Provider
+#      clientId: ""
+#      #Client secret to connect to oauth Provider
+#      secret: ""
+#      #Mapping the fields of the oauth token to the user info object which are needed in TP
+#      attributeMappings:
+#        #Field to be considered for username of the logged-in user
+#        username: ""
+#        #Field to be considered for groups of the logged-in user
+#        groups: ""
+#  #Ldap server details for login into the Tanzu Platform;
+#  #please uncomment the ldap section if you are planning to use ldap for the login and
+#  #comment the oauth provider section if you are not using oauth providers for the login
+#  ldap:
+#    #Ldap server url
+#    url: ""
+#    #Certificate of the ldap server if it needs to connect over ssl(ldaps), optional field.
+#    #Remove this field if it needs to connect over plain ldap protocol
+#    certificate: ""
+#    #Ldap server credential details
+#    credentials:
+#      #DN record for the ldap credential to search the directory, example: cn=admin,dc=broadcom,dc=com
+#      userDN: ""
+#      #password of the above DN
+#      password: ""
+#    #LDAP configuration to fetch user for the TP login operation
+#    users:
+#      #Base DN where the users need to be searched, example: dc=broadcom,dc=com
+#      baseDN: ""
+#      #Search filter to be used to get the user record who is trying to login into TP, example cn={0}.
+#      #Here {0} is used to annotate where the username will be inserted
+#      #This value will be clubbed with base DN to fetch the user record, the query will become cn=testuser,dc=broadcom,dc=com"
+#      searchFilter: ""
+#      #Attribute name that contains the user's email address
+#      mailAttribute: "mail"
+#    #LDAP configuration to fetch groups of the user
+#    groups:
+#      #Base DN where the groups need to be searched, example: dc=broadcom,dc=com
+#      baseDN: ""
+#      #Similar to user filter, the user group memberships are retrieved based on this filter, example: member={0}
+#      searchFilter: ""
+#      #Number of depth levels to search for nested groups, set this value to 1 to disable nested groups search
+#      searchDepth: 10
+#      #Attribute which holds the name of the group in the LDAP record
+#      groupNameAttribute: cn
+
+# Please provide the default organization details in the configuration settings below.
+organization:
+  #  Specifies the name of the organization.
+  name: ""
+# TO BE REMOVED before the final customer release
+#! The default configuration for `config.yaml` includes exclusions for the August release
+#! to facilitate selective deployment, optimizing for specific testing and development needs.
+#!
+#! For the September release, all components need to be deployed to ensure comprehensive testing
+#! and functionality validation. To facilitate this, a specific overlay for the June release
+#! is applied when the `make June_release` command is executed. This overlay removes any
+#! exclusions set in the May configuration, allowing for a full deployment of all packages
+#! and components.
+internal:
+  excludedComponents:

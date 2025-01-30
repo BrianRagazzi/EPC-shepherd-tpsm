@@ -33,7 +33,7 @@ export JUMPERIP=$(sheepctl lock get ${LOCKID} -j |jq -r .outputs.vm.jumper.hostn
 *  copy files from local to jumpbox - run on local machine where sheepctl is
 ```
 scp resources/dnsmasq-install.sh kubo@$JUMPERIP:/home/kubo/
-scp resources/vmclass-tpsm.yaml kubo@$JUMPERIP:/home/kubo/
+scp resources/storageclass-tpsm.yaml kubo@$JUMPERIP:/home/kubo/
 scp resources/cluster-tpsm.yaml kubo@$JUMPERIP:/home/kubo/
 scp ${ENVNAME}.kubeconfig kubo@$JUMPERIP:/home/kubo/.kube/config
 ```
@@ -129,4 +129,32 @@ Make sure your context is tpsm-admin@tpsm
 * Install cert-manager
 ```
 kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.16.2/cert-manager.yaml
+```
+* Create tpsm storageClass
+```
+kubectl apply -f storageclass-tpsm.yaml
+```
+
+# Install TPSM - run on jumpbox
+
+## Download non-airgapped bits from artifactory to jumpbox
+```
+export ARTIFACTORY_USER=jd123456 //broadcom user ID
+export ARTIFACTORY_API_TOKEN=abc123 // Identity token from https://usw1.packages.broadcom.com/ui/user_profile
+export TANZU_SM_VERSION=10.0.0-oct-2024-rc.533-vc0bb325
+
+curl -u ${ARTIFACTORY_USER}:${ARTIFACTORY_API_TOKEN} https://usw1.packages.broadcom.com/artifactory/tis-tanzuhub-sm-docker-dev-local/hub-self-managed/${TANZU_SM_VERSION}/releases/non-airgapped/tanzu-self-managed-${TANZU_SM_VERSION}-linux-amd64.tar.gz --output tanzu-self-managed-${TANZU_SM_VERSION}.tar.gz
+```
+
+## Extract to ~/tpsm
+```
+mkdir ./tpsm
+tar -xzvf tanzu-self-managed-${TANZU_SM_VERSION}.tar.gz -C ./tpsm
+```
+## Update config.yaml
+```
+sed -i 's/loadBalancerIP: ""/loadBalancerIP: "192.168.116.206"/' tpsm/config.yaml
+sed -i 's/host: ""/host: "tanzu.platform.io"/' tpsm/config.yaml
+sed -i 's/storageClass: ""/storageClass: "tpsm"/g' tpsm/config.yaml
+sed -i ' 80 s/password: ""/password: "admin123"/'
 ```

@@ -1,0 +1,12 @@
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  labels:
+    isSyncedFromSupervisor: "false"
+  name: tpsm
+parameters:
+  svStorageClass: tkgs-k8s-obj-policy
+provisioner: csi.vsphere.vmware.com
+reclaimPolicy: Retain
+allowVolumeExpansion: true
+volumeBindingMode: Immediate
