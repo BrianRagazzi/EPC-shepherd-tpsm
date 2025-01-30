@@ -56,6 +56,12 @@ ssh kubo@$JUMPERIP
 ```
 ~/dns-masq-install.sh
 ```
+* add dns record for tanzu.platform.io
+```
+echo 'address=/tanzu.platform.io/192.168.116.206' | sudo tee /etc/dnsmasq.d/vlan-dhcp-dns.conf
+sudo systemctl restart dnsmasq
+```
+
 * Create .kube folder - run on jumpbox
 ```
 mkdir -p ~/.kube
@@ -65,6 +71,7 @@ mkdir -p ~/.kube
   ```
   mkdir -p build/
   curl -kL https://carvel.dev/install.sh | K14SIO_INSTALL_BIN_DIR=build bash
+  sudo cp -r ./build/* /usr/local/bin/
   ```
   * Tanzu CLI
   ```
