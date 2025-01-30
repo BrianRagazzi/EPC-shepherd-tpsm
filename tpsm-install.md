@@ -2,38 +2,35 @@
 
 
 
-# Get jumpbox details:
-## exports
+# Run on local machine where sheepctl is:
+* Set exports
 ```
 export LOCKID=d3e4d358-131d-4426-885a-2d2eac25bea1
 export ENVNAME=USFSI
 ```
 
-## get lock details
+* get lock details
 ```
 sheepctl lock get ${LOCKID} > ${ENVNAME}.json
 sheepctl lock get ${LOCKID} -j -o ${ENVNAME}-access.json
 ```
-### kubeconfig for supervisor
+* Get kubeconfig for supervisor
 ```
 sheepctl lock kubeconfig ${LOCKID} > ${ENVNAME}.kubeconfig
 ```
-## User/pass for jumpbox
-username = kubo
-Password = sheepctl lock get ${LOCKID} -j |jq -r .outputs.vm.jumper.password
+* User/pass for jumpbox
+  - username = kubo
+  - Password = sheepctl lock get ${LOCKID} -j |jq -r .outputs.vm.jumper.password
 
-## Password for vCenter (not pretty)
-Password = sheepctl lock get ${LOCKID}  | jq -r .vc[].password
+* Password for vCenter (not pretty)
+  - Password = sheepctl lock get ${LOCKID}  | jq -r .vc[].password
 
-## Get jumpbox IP
+* Get jumpbox IP, export to envvar
 ```
 export JUMPERIP=$(sheepctl lock get ${LOCKID} -j |jq -r .outputs.vm.jumper.hostname)
 ```
 
-# Login to jumpbox
-
-
-## copy files from local to jumpbox - run on local machine where sheepctl is
+*  copy files from local to jumpbox - run on local machine where sheepctl is
 ```
 scp resources/dnsmasq-install.sh kubo@$JUMPERIP:/home/kubo/
 scp resources/vmclass-tpsm.yaml kubo@$JUMPERIP:/home/kubo/
