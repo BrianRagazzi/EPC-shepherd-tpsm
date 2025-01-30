@@ -69,6 +69,8 @@ mkdir -p ~/.kube
   * Tanzu CLI
   ```
   sudo apt install -y ca-certificates curl gpg
+  ```
+  ```
   sudo mkdir -p /etc/apt/keyrings
   curl -fsSL https://storage.googleapis.com/tanzu-cli-installer-packages/keys/TANZU-PACKAGING-GPG-RSA-KEY.gpg | sudo gpg --dearmor -o /etc/apt/keyrings/tanzu-archive-keyring.gpg
   echo "deb [signed-by=/etc/apt/keyrings/tanzu-archive-keyring.gpg] https://storage.googleapis.com/tanzu-cli-installer-packages/apt tanzu-cli-jessie main" | sudo tee /etc/apt/sources.list.d/tanzu.list
