@@ -38,6 +38,16 @@ scp resources/cluster-tpsm.yaml kubo@$JUMPERIP:/home/kubo/
 scp ${ENVNAME}.kubeconfig kubo@$JUMPERIP:/home/kubo/.kube/config
 ```
 
+# On vCenter UI
+
+* Create VMClass in testns namespace
+  * name: tpsm
+  * CPU: 8
+  * RAM: 32GB
+  * Reservation: none
+
+
+
 # Login to Jumpbox
 ```
 ssh kubo@$JUMPERIP
@@ -51,5 +61,11 @@ ssh kubo@$JUMPERIP
 mkdir -p ~/.kube
 ```
 # supervisor cluster - run on jumpbox
-  - confirm access to supervisor cluster
-  ```kubectl get no```
+* confirm access to supervisor cluster
+```
+kubectl get ns testns
+```
+
+* ~~Create vmclass~~
+Doenn't work as desired
+~~kubectl apply -n testns -f vmclass-tpsm.yaml~~
