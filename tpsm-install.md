@@ -153,8 +153,22 @@ tar -xzvf tanzu-self-managed-${TANZU_SM_VERSION}.tar.gz -C ./tpsm
 ```
 ## Update config.yaml
 ```
-sed -i 's/loadBalancerIP: ""/loadBalancerIP: "192.168.116.206"/' tpsm/config.yaml
-sed -i 's/host: ""/host: "tanzu.platform.io"/' tpsm/config.yaml
-sed -i 's/storageClass: ""/storageClass: "tpsm"/g' tpsm/config.yaml
-sed -i ' 80 s/password: ""/password: "admin123"/'
+sed -i 's|profile: foundation|profile: evaluation'|' tpsm/config.yaml
+sed -i 's|loadBalancerIP: ""|loadBalancerIP: "192.168.116.206"|' tpsm/config.yaml
+sed -i 's|host: ""|host: "tanzu.platform.io"|' tpsm/config.yaml
+sed -i 's|storageClass: ""|storageClass: "tpsm"|g' tpsm/config.yaml
+sed -i ' 80 s|password: ""|password: "admin123"|' tpsm/config.yaml
+sed -i ' 153 s|name: ""|name: "tanzu-sales"|' tpsm/config.yaml
+sed -i 's|#  oauthProviders:|  oauthProviders:|g' tpsm/config.yaml
+sed -i ' 92 s|#    - name: ""|    - name: "okta.test"|' tpsm/config.yaml
+sed -i ' 97 s|#      configUrl: ""|      configUrl: "https://dev-70846880.okta.com/.well-known/openid-configuration"|'  tpsm/config.yaml
+sed -i ' 99 s|#      issuerUrl: ""|      issuerUrl: "https://dev-70846880.okta.com"|' tpsm/config.yaml
+sed -i ' 101 s|#      scopes: ["openid"]|      scopes: ["openid", "email", "groups"]|' tpsm/config.yaml
+sed -i ' 103 s|#      loginPageLinkText: ""|      loginPageLinkText: "Login with Dev Okta"|'  tpsm/config.yaml
+sed -i ' 105 s|#      clientId: ""|      clientId: "0oaggqbiqdlnTtfFY5d7"|'  tpsm/config.yaml
+sed -i ' 107 s|#      secret: ""|      secret: "UMdEVboJTSfHAQEbuIlj1j2zticsxBRiEuRLYsfJk6dbeR9Nh47qH_7E_7q7MVT1"|' tpsm/config.yaml
+sed -i ' 109 s|#      attributeMappings:|      attributeMappings:|' tpsm/config.yaml
+sed -i ' 111 s|#        username: ""|        username: "email"|' tpsm/config.yaml
+sed -i ' 113 s|#        groups: ""|        groups: "groups"|' tpsm/config.yaml
+
 ```
