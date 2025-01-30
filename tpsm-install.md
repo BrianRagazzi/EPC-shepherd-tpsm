@@ -84,11 +84,11 @@ kubectl get secret -n testns tpsm-kubeconfig -ojsonpath='{.data.value}' | base64
 ```
 
 * Merge kubeconfig
-1. set KUBECONFIG env var:
-`export KUBECONFIG=~/.kube/config:~/tpsm-kubeconfig`
+  * set KUBECONFIG env var:
+  `export KUBECONFIG=~/.kube/config:~/tpsm-kubeconfig`
 
-2. Flatten to new file:
-`kubectl config view --flatten > ~/combo.config`
+  * Flatten to new file:
+  `kubectl config view --flatten > ~/combo.config`
 
-3. Replace ~/.kube/config
-`cp combo.config ~/.kube/config`
+  * Replace ~/.kube/config
+  `cp combo.config ~/.kube/config`
