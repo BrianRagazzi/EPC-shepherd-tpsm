@@ -77,6 +77,10 @@ Doesn't work as desired
 ```
 kubectl apply -n testns -f cluster-tpsm.yaml
 ```
+  * wait for ready:
+  ```
+  watch -n 30 kubectl get tanzukubernetescluster -n testns tpsm -ojsonpath='{.status.phase}'
+  ```
 
 * get kubeconfig for tpsm cluster
 ```
