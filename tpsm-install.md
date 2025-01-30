@@ -75,8 +75,13 @@ mkdir -p ~/.kube
   sudo apt update
   sudo apt install -y tanzu-cli
   ```
-
-
+  * Crashd
+  ```
+  wget https://github.com/vmware-tanzu/crash-diagnostics/releases/download/v0.3.10/crashd_0.3.10_linux_amd64.tar.gz
+  mkdir -p crashd_0.3.10_linux_amd64
+  tar -xvf crashd_0.3.10_linux_amd64.tar.gz -C crashd_0.3.10_linux_amd64
+  sudo mv crashd_0.3.10_linux_amd64/crashd  /usr/local/bin/crashd
+  ```
 
 
 # supervisor cluster - run on jumpbox
@@ -122,3 +127,7 @@ kubectl config use-context tpsm-admin@tpsm
 ```
 # Prepare target cluster
 Make sure your context is tpsm-admin@tpsm
+* Install cert-manager
+```
+kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.16.2/cert-manager.yaml
+```
