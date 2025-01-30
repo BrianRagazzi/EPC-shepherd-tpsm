@@ -1,0 +1,50 @@
+apiVersion: run.tanzu.vmware.com/v1alpha3
+kind: TanzuKubernetesCluster
+metadata:
+  name: tpsm
+spec:
+  topology:
+    controlPlane:
+      replicas: 1
+      vmClass: tpsm
+      storageClass: tkgs-k8s-obj-policy
+      tkr:
+        reference:
+          name: v1.28.7---vmware.1-fips.1-tkg.1
+      volumes:
+        - name: kubelet
+          mountPath: /var/lib/kubelet
+          capacity:
+            storage: 80Gi
+        - name: containerd
+          mountPath: /var/lib/containerd
+          capacity:
+            storage: 40Gi
+    nodePools:
+      - replicas: 6
+        name: worker-np
+        vmClass: tpsm
+        storageClass: tkgs-k8s-obj-policy
+        tkr:
+          reference:
+            name: v1.28.7---vmware.1-fips.1-tkg.1
+        volumes:
+          - name: kubelet
+            mountPath: /var/lib/kubelet
+            capacity:
+              storage: 80Gi
+          - name: containerd
+            mountPath: /var/lib/containerd
+            capacity:
+              storage: 40Gi
+  settings:
+    network:
+      cni:
+        name: antrea
+      services:
+        cidrBlocks: ["192.168.0.0/17"]
+      pods:
+        cidrBlocks: ["192.168.128.0/17"]
+    storage:
+      defaultClass: tkgs-k8s-obj-policy
+      classes: ["tkgs-k8s-obj-policy"]
