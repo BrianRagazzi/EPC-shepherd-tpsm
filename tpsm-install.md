@@ -58,7 +58,7 @@ ssh kubo@$JUMPERIP
 ```
 * add dns record for tanzu.platform.io
 ```
-echo 'address=/tanzu.platform.io/192.168.116.206' | sudo tee /etc/dnsmasq.d/vlan-dhcp-dns.conf
+echo 'address=/tanzu.platform.io/192.168.0.4' | sudo tee /etc/dnsmasq.d/vlan-dhcp-dns.conf
 sudo systemctl restart dnsmasq
 ```
 
