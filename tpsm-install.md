@@ -185,3 +185,11 @@ sed -i ' 113 s|#        groups: ""|        groups: "groups"|' tpsm/config.yaml
 cd ./tpsm
 ./tanzu-sm-installer verify -f config.yaml -u "${ARTIFACTORY_USER}:${ARTIFACTORY_API_TOKEN}" -r ${DOCKER_REGISTRY}/hub-self-managed/${TANZU_SM_VERSION}/repo --install-version ${TANZU_SM_VERSION}
 ```
+Watch the verification for [x] lines and resolve any that arise.
+Looking to see **Success: The hostname 'tanzu.platform.io' resolves to 192.168.116.206** and **Completed pre-check(s) validation**
+
+
+## Install!!
+```
+./tanzu-sm-installer install -f config.yaml -u "${ARTIFACTORY_USER}:${ARTIFACTORY_API_TOKEN}" -r ${DOCKER_REGISTRY}/hub-self-managed/${TANZU_SM_VERSION}/repo --install-version ${TANZU_SM_VERSION}
+```
