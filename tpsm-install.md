@@ -90,10 +90,7 @@ mkdir -p ~/.kube
 kubectl get ns testns
 ```
 
-* ~~Create vmclass~~
-
-Doesn't work as desired
-
+* ~~Create vmclass~~ **Doesn't work as desired**
 ~~kubectl apply -n testns -f vmclass-tpsm.yaml~~
 
 
