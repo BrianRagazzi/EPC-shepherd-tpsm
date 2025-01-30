@@ -206,3 +206,7 @@ Looking to see **Success: The hostname 'tanzu.platform.io' resolves to 192.168.1
 ```
 ./tanzu-sm-installer install -f config.yaml -u "${ARTIFACTORY_USER}:${ARTIFACTORY_API_TOKEN}" -r ${DOCKER_REGISTRY}/hub-self-managed/${TANZU_SM_VERSION}/repo --install-version ${TANZU_SM_VERSION}
 ```
+* once the install starts, you can break out of it to check the status:
+`tanzu package installed list -n tanzusm`
+
+`kubectl get pkgi -n tanzusm`
