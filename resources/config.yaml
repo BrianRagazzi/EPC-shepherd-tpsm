@@ -58,7 +58,6 @@ kafka:
   storageClass: "tpsm" # storage class created earlier
 zookeeper:
   storageClass: "tpsm" # storage class created earlier
-
 # Image registry settings used as service parameters. values will be automatically generated.
 imageRegistry:
   server: ""
