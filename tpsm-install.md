@@ -142,6 +142,7 @@ kubectl apply -f storageclass-tpsm.yaml
 export ARTIFACTORY_USER=jd123456 //broadcom user ID
 export ARTIFACTORY_API_TOKEN=abc123 // Identity token from https://usw1.packages.broadcom.com/ui/user_profile
 export TANZU_SM_VERSION=10.0.0-oct-2024-rc.533-vc0bb325
+export DOCKER_REGISTRY=tis-tanzuhub-sm-docker-dev-local.usw1.packages.broadcom.com
 
 curl -u ${ARTIFACTORY_USER}:${ARTIFACTORY_API_TOKEN} https://usw1.packages.broadcom.com/artifactory/tis-tanzuhub-sm-docker-dev-local/hub-self-managed/${TANZU_SM_VERSION}/releases/non-airgapped/tanzu-self-managed-${TANZU_SM_VERSION}-linux-amd64.tar.gz --output tanzu-self-managed-${TANZU_SM_VERSION}.tar.gz
 ```
@@ -153,7 +154,7 @@ tar -xzvf tanzu-self-managed-${TANZU_SM_VERSION}.tar.gz -C ./tpsm
 ```
 ## Update config.yaml
 ```
-sed -i 's|profile: foundation|profile: evaluation'|' tpsm/config.yaml
+sed -i 's|profile: foundation|profile: evaluation|' tpsm/config.yaml
 sed -i 's|loadBalancerIP: ""|loadBalancerIP: "192.168.116.206"|' tpsm/config.yaml
 sed -i 's|host: ""|host: "tanzu.platform.io"|' tpsm/config.yaml
 sed -i 's|storageClass: ""|storageClass: "tpsm"|g' tpsm/config.yaml
@@ -170,5 +171,10 @@ sed -i ' 107 s|#      secret: ""|      secret: "UMdEVboJTSfHAQEbuIlj1j2zticsxBRi
 sed -i ' 109 s|#      attributeMappings:|      attributeMappings:|' tpsm/config.yaml
 sed -i ' 111 s|#        username: ""|        username: "email"|' tpsm/config.yaml
 sed -i ' 113 s|#        groups: ""|        groups: "groups"|' tpsm/config.yaml
+```
 
+## verify
+```
+cd ./tpsm
+./tanzu-sm-installer verify -f config.yaml -u "${ARTIFACTORY_USER}:${ARTIFACTORY_API_TOKEN}" -r ${DOCKER_REGISTRY}/hub-self-managed/${TANZU_SM_VERSION}/repo --install-version ${TANZU_SM_VERSION}
 ```
