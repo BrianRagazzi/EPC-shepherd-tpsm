@@ -34,6 +34,7 @@ export JUMPERIP=$(sheepctl lock get ${LOCKID} -j |jq -r .outputs.vm.jumper.hostn
 ```
 scp resources/dnsmasq-install.sh kubo@$JUMPERIP:/home/kubo/
 scp resources/vmclass-tpsm.yaml kubo@$JUMPERIP:/home/kubo/
+scp resources/cluster-tpsm.yaml kubo@$JUMPERIP:/home/kubo/
 scp ${ENVNAME}.kubeconfig kubo@$JUMPERIP:/home/kubo/.kube/config
 ```
 
@@ -49,7 +50,6 @@ ssh kubo@$JUMPERIP
 ```
 mkdir -p ~/.kube
 ```
-*  connect to supervisor cluster
-
-
- - run on jumpbox
+# supervisor cluster - run on jumpbox
+  - confirm access to supervisor cluster
+  ```kubectl get no```
