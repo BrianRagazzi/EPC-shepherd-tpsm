@@ -60,6 +60,25 @@ ssh kubo@$JUMPERIP
 ```
 mkdir -p ~/.kube
 ```
+* Install prereqs on jumpbox
+  * Carvel Tools
+  ```
+  mkdir -p build/
+  curl -kL https://carvel.dev/install.sh | K14SIO_INSTALL_BIN_DIR=build bash
+  ```
+  * Tanzu CLI
+  ```
+  sudo apt install -y ca-certificates curl gpg
+  sudo mkdir -p /etc/apt/keyrings
+  curl -fsSL https://storage.googleapis.com/tanzu-cli-installer-packages/keys/TANZU-PACKAGING-GPG-RSA-KEY.gpg | sudo gpg --dearmor -o /etc/apt/keyrings/tanzu-archive-keyring.gpg
+  echo "deb [signed-by=/etc/apt/keyrings/tanzu-archive-keyring.gpg] https://storage.googleapis.com/tanzu-cli-installer-packages/apt tanzu-cli-jessie main" | sudo tee /etc/apt/sources.list.d/tanzu.list
+  sudo apt update
+  sudo apt install -y tanzu-cli
+  ```
+
+
+
+
 # supervisor cluster - run on jumpbox
 * confirm access to supervisor cluster
 ```
@@ -96,3 +115,10 @@ kubectl get secret -n testns tpsm-kubeconfig -ojsonpath='{.data.value}' | base64
 
   * Replace ~/.kube/config
   `cp combo.config ~/.kube/config`
+
+* Change context to tpsm cluster
+```
+kubectl config use-context tpsm-admin@tpsm
+```
+# Prepare target cluster
+Make sure your context is tpsm-admin@tpsm
