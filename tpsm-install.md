@@ -141,6 +141,19 @@ kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/
 ```
 kubectl apply -f storageclass-tpsm.yaml
 ```
+* install Kapp controller
+  * check to see if kapp controller exists:
+  `kubectl get po -A -l app=kapp-controller`
+  * if it does not, install it
+  ```
+  kapp deploy -a kc -f https://github.com/carvel-dev/kapp-controller/releases/download/v0.50.0/release.yml
+  ```
+
+* Install SecretGen Controller
+```
+kapp deploy -a sg -f https://github.com/carvel-dev/secretgen-controller/releases/latest/download/release.yml
+```
+
 
 # Install TPSM - run on jumpbox
 
