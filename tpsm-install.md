@@ -67,5 +67,28 @@ kubectl get ns testns
 ```
 
 * ~~Create vmclass~~
-Doenn't work as desired
+
+Doesn't work as desired
+
 ~~kubectl apply -n testns -f vmclass-tpsm.yaml~~
+
+
+* Create Cluster & wait for ready
+```
+kubectl apply -n testns -f cluster-tpsm.yaml
+```
+
+* get kubeconfig for tpsm cluster
+```
+kubectl get secret -n testns tpsm-kubeconfig -ojsonpath='{.data.value}' | base64 -d > tpsm-kubeconfig
+```
+
+* Merge kubeconfig
+1. set KUBECONFIG env var:
+`export KUBECONFIG=~/.kube/config:~/tpsm-kubeconfig`
+
+2. Flatten to new file:
+`kubectl config view --flatten > ~/combo.config`
+
+3. Replace ~/.kube/config
+`cp combo.config ~/.kube/config`
