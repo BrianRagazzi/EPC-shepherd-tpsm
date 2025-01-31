@@ -100,10 +100,6 @@ sudo systemctl restart squid
 kubectl get ns testns
 ```
 
-* ~~Create vmclass~~ **Doesn't work as desired**
-~~kubectl apply -n testns -f vmclass-tpsm.yaml~~
-
-
 * Create Cluster & wait for ready
 ```
 kubectl apply -n testns -f cluster-tpsm.yaml
