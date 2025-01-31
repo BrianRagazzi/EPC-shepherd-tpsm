@@ -223,3 +223,14 @@ Use firefox on local machine: Set Network Settings as follows:
 * Proxy DNS when using SOCKS v4
 
 **Browse to https://tanzu.platform.io in Firefox**
+
+
+
+
+
+
+# tear down
+* Remove TPSM
+```
+./tanzu-sm-installer reset --kubeconfig ~/.kube/config --include-pv-deletion
+```
