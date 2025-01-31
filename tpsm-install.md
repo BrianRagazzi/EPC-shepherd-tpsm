@@ -156,6 +156,7 @@ kapp deploy -a sg -f https://github.com/carvel-dev/secretgen-controller/releases
 # Install TPSM - run on jumpbox
 
 ## Download non-airgapped bits from artifactory to jumpbox
+If you don't have access to get your identity token, you may need to request access to the "Artifactory SaaS BSG" instance via 1.Support.  You can follow the instructions at https://broadcomitsm.wolkenservicedesk.com/wolken-support/article?articleNumber=KB0005807 to get access.
 ```
 export ARTIFACTORY_USER=jd123456 # broadcom user ID
 export ARTIFACTORY_API_TOKEN=abc123 # Identity token from https://usw1.packages.broadcom.com/ui/user_profile
