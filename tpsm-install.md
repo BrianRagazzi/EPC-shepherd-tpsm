@@ -157,8 +157,8 @@ kapp deploy -a sg -f https://github.com/carvel-dev/secretgen-controller/releases
 
 ## Download non-airgapped bits from artifactory to jumpbox
 ```
-export ARTIFACTORY_USER=jd123456 //broadcom user ID
-export ARTIFACTORY_API_TOKEN=abc123 // Identity token from https://usw1.packages.broadcom.com/ui/user_profile
+export ARTIFACTORY_USER=jd123456 # broadcom user ID
+export ARTIFACTORY_API_TOKEN=abc123 # Identity token from https://usw1.packages.broadcom.com/ui/user_profile
 export TANZU_SM_VERSION=10.0.0-oct-2024-rc.533-vc0bb325
 export DOCKER_REGISTRY=tis-tanzuhub-sm-docker-dev-local.usw1.packages.broadcom.com
 
