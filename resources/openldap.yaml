@@ -1,5 +1,13 @@
 ---
 apiVersion: v1
+kind: Namespace
+metadata:
+  labels:
+    kubernetes.io/metadata.name: openldap
+    pod-security.kubernetes.io/enforce: privileged
+  name: openldap
+---
+apiVersion: v1
 kind: ConfigMap
 metadata:
   name: app-config
