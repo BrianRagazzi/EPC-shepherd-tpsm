@@ -60,6 +60,7 @@ ssh kubo@$JUMPERIP
 ```
 echo 'address=/tanzu.platform.io/192.168.0.4' | sudo tee /etc/dnsmasq.d/vlan-dhcp-dns.conf
 sudo systemctl restart dnsmasq
+sudo systemctl restart squid
 ```
 
 * Create .kube folder - run on jumpbox
@@ -209,3 +210,16 @@ Looking to see **Success: The hostname 'tanzu.platform.io' resolves to 192.168.1
 * once the install starts, you can break out of it to check the status:
   * `tanzu package installed list -n tanzusm`
   * `kubectl get pkgi -n tanzusm`
+
+
+## Connect
+Use firefox on local machine: Set Network Settings as follows:
+
+* Select Manual proxy configuration
+  * HTTP Proxy:  $JUMPERIP
+  * port: 443
+  * Also use this proxy for HTTPS
+* No proxy for ".mozilla.org, mozilla.com, google.com,127.0.0.1/8"
+* Proxy DNS when using SOCKS v4
+
+**Browse to https://tanzu.platform.io in Firefox**
