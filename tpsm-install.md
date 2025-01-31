@@ -39,7 +39,7 @@ ssh kubo@$JUMPERIP -t 'mkdir -p $HOME/.kube'
 ```
 scp -p resources/dnsmasq-install.sh kubo@$JUMPERIP:/home/kubo/
 scp resources/storageclass-tpsm.yaml kubo@$JUMPERIP:/home/kubo/
-scp resources/kapp-overlay.yaml kubo@$JUMPERIP:/home/kubo/
+scp resources/set-baseline.yaml kubo@$JUMPERIP:/home/kubo/
 scp resources/cluster-tpsm.yaml kubo@$JUMPERIP:/home/kubo/
 scp ${ENVNAME}.kubeconfig kubo@$JUMPERIP:/home/kubo/.kube/config
 ```
@@ -144,7 +144,7 @@ kubectl apply -f storageclass-tpsm.yaml
   `kubectl get po -A -l app=kapp-controller`
   * if it does not, install it
   ```
-  kapp deploy -a kc -f <(ytt -f https://github.com/carvel-dev/kapp-controller/releases/download/v0.50.0/release.yml -f kapp-overlay.yaml)
+  kapp deploy -a kc -f <(ytt -f https://github.com/carvel-dev/kapp-controller/releases/download/v0.50.0/release.yml -f set-baseline.yaml -v namespace=kapp-controller)
   ```
 
 * Install SecretGen Controller
