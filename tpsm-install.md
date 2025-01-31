@@ -30,6 +30,11 @@ sheepctl lock kubeconfig ${LOCKID} > ${ENVNAME}.kubeconfig
 export JUMPERIP=$(sheepctl lock get ${LOCKID} -j |jq -r .outputs.vm.jumper.hostname)
 ```
 
+* Create a $HOME/.kube directory on the jumpbox
+```
+ssh kubo@$JUMPERIP -t 'mkdir -p $HOME/.kube'
+```
+
 *  copy files from local to jumpbox - run on local machine where sheepctl is
 ```
 scp -p resources/dnsmasq-install.sh kubo@$JUMPERIP:/home/kubo/
@@ -47,7 +52,6 @@ scp ${ENVNAME}.kubeconfig kubo@$JUMPERIP:/home/kubo/.kube/config
   * Reservation: none
 
 
-
 # Login to Jumpbox
 ```
 ssh kubo@$JUMPERIP
@@ -63,10 +67,6 @@ sudo systemctl restart dnsmasq
 sudo systemctl restart squid
 ```
 
-* Create .kube folder - run on jumpbox
-```
-mkdir -p ~/.kube
-```
 * Install prereqs on jumpbox
   * Carvel Tools
   ```
