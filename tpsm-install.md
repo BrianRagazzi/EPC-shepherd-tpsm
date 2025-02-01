@@ -94,6 +94,18 @@ sudo systemctl restart squid
   sudo mv crashd_0.3.10_linux_amd64/crashd  /usr/local/bin/crashd
   ```
 
+# Modify Supervisor Workload Network config
+The DNS for the workload network managed by the Supervisor is set to 192.19.189.10.  We need to change it to use our dnsmasq server on the jumpbox at 192.168.1.1.  
+* First, on the machine you ran shepctl on, grab the the hostname and password to access vCenter:
+  * `jq '.outputs.vm["vc.0"]' ${ENVNAME}-access.json`
+* Go the the hostname (ip, actually) in your browser and login to vCenter as "administrator@vsphere.local" with the password you got from the previous command.
+  * Go to Workload Management via the hamburger menu on the top left of the browser page.
+  * Click on the "Supervisors" tab under the "Workload Management" heading in the top, middle of the page. 
+  * Click on the "tkgs-cls" Supervisor to open its details.
+  * Click on the "Configure" tab in the resulting details page.
+  * In the tree-view near the "Configure" tab you just clicked, under the "Supervisor" section of the tree, click "Network"
+  * In the "Network" page, there are a few expandable sections.  Click the section called "Workload Network" to expand it
+  * Next to the DNS server, you will see the value of "192.19.189.10".  Click the "Edit" link next to that DNS value.  Update the DNS server to be 192.168.1.1, and click the "Save" button.
 
 # supervisor cluster - run on jumpbox
 * confirm access to supervisor cluster
