@@ -30,10 +30,16 @@ sheepctl lock kubeconfig ${LOCKID} > ${ENVNAME}.kubeconfig
 export JUMPERIP=$(sheepctl lock get ${LOCKID} -j |jq -r .outputs.vm.jumper.hostname)
 ```
 
+* Create a $HOME/.kube directory on the jumpbox
+```
+ssh kubo@$JUMPERIP -t 'mkdir -p $HOME/.kube'
+```
+
 *  copy files from local to jumpbox - run on local machine where sheepctl is
 ```
 scp -p resources/dnsmasq-install.sh kubo@$JUMPERIP:/home/kubo/
 scp resources/storageclass-tpsm.yaml kubo@$JUMPERIP:/home/kubo/
+scp resources/set-baseline.yaml kubo@$JUMPERIP:/home/kubo/
 scp resources/cluster-tpsm.yaml kubo@$JUMPERIP:/home/kubo/
 scp ${ENVNAME}.kubeconfig kubo@$JUMPERIP:/home/kubo/.kube/config
 ```
@@ -45,7 +51,6 @@ scp ${ENVNAME}.kubeconfig kubo@$JUMPERIP:/home/kubo/.kube/config
   * CPU: 8
   * RAM: 32GB
   * Reservation: none
-
 
 
 # Login to Jumpbox
@@ -63,10 +68,6 @@ sudo systemctl restart dnsmasq
 sudo systemctl restart squid
 ```
 
-* Create .kube folder - run on jumpbox
-```
-mkdir -p ~/.kube
-```
 * Install prereqs on jumpbox
   * Carvel Tools
   ```
@@ -93,16 +94,24 @@ mkdir -p ~/.kube
   sudo mv crashd_0.3.10_linux_amd64/crashd  /usr/local/bin/crashd
   ```
 
+# Modify Supervisor Workload Network config
+The DNS for the workload network managed by the Supervisor is set to 192.19.189.10.  We need to change it to use our dnsmasq server on the jumpbox at 192.168.1.1.  
+* First, on the machine you ran shepctl on, grab the the hostname and password to access vCenter:
+  * `jq '.outputs.vm["vc.0"]' ${ENVNAME}-access.json`
+* Go the the hostname (ip, actually) in your browser and login to vCenter as "administrator@vsphere.local" with the password you got from the previous command.
+  * Go to Workload Management via the hamburger menu on the top left of the browser page.
+  * Click on the "Supervisors" tab under the "Workload Management" heading in the top, middle of the page. 
+  * Click on the "tkgs-cls" Supervisor to open its details.
+  * Click on the "Configure" tab in the resulting details page.
+  * In the tree-view near the "Configure" tab you just clicked, under the "Supervisor" section of the tree, click "Network"
+  * In the "Network" page, there are a few expandable sections.  Click the section called "Workload Network" to expand it
+  * Next to the DNS server, you will see the value of "192.19.189.10".  Click the "Edit" link next to that DNS value.  Update the DNS server to be 192.168.1.1, and click the "Save" button.
 
 # supervisor cluster - run on jumpbox
 * confirm access to supervisor cluster
 ```
 kubectl get ns testns
 ```
-
-* ~~Create vmclass~~ **Doesn't work as desired**
-~~kubectl apply -n testns -f vmclass-tpsm.yaml~~
-
 
 * Create Cluster & wait for ready
 ```
@@ -147,7 +156,7 @@ kubectl apply -f storageclass-tpsm.yaml
   `kubectl get po -A -l app=kapp-controller`
   * if it does not, install it
   ```
-  kapp deploy -a kc -f https://github.com/carvel-dev/kapp-controller/releases/download/v0.50.0/release.yml
+  kapp deploy -a kc -f <(ytt -f https://github.com/carvel-dev/kapp-controller/releases/download/v0.50.0/release.yml -f set-baseline.yaml -v namespace=kapp-controller)
   ```
 
 * Install SecretGen Controller
@@ -159,9 +168,10 @@ kapp deploy -a sg -f https://github.com/carvel-dev/secretgen-controller/releases
 # Install TPSM - run on jumpbox
 
 ## Download non-airgapped bits from artifactory to jumpbox
+If you don't have access to get your identity token, you may need to request access to the "Artifactory SaaS BSG" instance via 1.Support.  You can follow the instructions at https://broadcomitsm.wolkenservicedesk.com/wolken-support/article?articleNumber=KB0005807 to get access.
 ```
-export ARTIFACTORY_USER=jd123456 //broadcom user ID
-export ARTIFACTORY_API_TOKEN=abc123 // Identity token from https://usw1.packages.broadcom.com/ui/user_profile
+export ARTIFACTORY_USER=jd123456 # broadcom user ID
+export ARTIFACTORY_API_TOKEN=abc123 # Identity token from https://usw1.packages.broadcom.com/ui/user_profile
 export TANZU_SM_VERSION=10.0.0-oct-2024-rc.533-vc0bb325
 export DOCKER_REGISTRY=tis-tanzuhub-sm-docker-dev-local.usw1.packages.broadcom.com
 
@@ -176,7 +186,7 @@ tar -xzvf tanzu-self-managed-${TANZU_SM_VERSION}.tar.gz -C ./tpsm
 ## Update config.yaml
 ```
 sed -i 's|profile: foundation|profile: evaluation|' tpsm/config.yaml
-sed -i 's|loadBalancerIP: ""|loadBalancerIP: "192.168.116.206"|' tpsm/config.yaml
+sed -i 's|loadBalancerIP: ""|loadBalancerIP: "192.168.0.4"|' tpsm/config.yaml
 sed -i 's|host: ""|host: "tanzu.platform.io"|' tpsm/config.yaml
 sed -i 's|storageClass: ""|storageClass: "tpsm"|g' tpsm/config.yaml
 sed -i ' 80 s|password: ""|password: "admin123"|' tpsm/config.yaml

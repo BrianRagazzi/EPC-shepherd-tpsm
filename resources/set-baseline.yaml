@@ -1,0 +1,10 @@
+#@ load("@ytt:overlay", "overlay")
+#@ load("@ytt:data", "data")
+
+#@overlay/match by=overlay.subset({"kind": "Namespace", "metadata":{"name": data.namespace}})
+---
+metadata:
+  #@overlay/match missing_ok=True
+  labels:
+    #@overlay/match missing_ok=True
+    pod-security.kubernetes.io/enforce: baseline
