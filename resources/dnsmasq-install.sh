@@ -12,7 +12,7 @@ echo "127.0.1.1 $(hostname)" | sudo tee -a /etc/hosts
 # Step 3: Configure dnsmasq to listen on localhost and use upstream DNS
 echo "Configuring dnsmasq..."
 sudo bash -c "cat > /etc/dnsmasq.conf" <<EOF
-listen-address=127.0.0.1
+listen-address=0.0.0.0
 bind-interfaces
 no-resolv
 server=192.19.189.10
