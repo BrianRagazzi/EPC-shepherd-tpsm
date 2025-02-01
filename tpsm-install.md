@@ -32,7 +32,7 @@ export JUMPERIP=$(sheepctl lock get ${LOCKID} -j |jq -r .outputs.vm.jumper.hostn
 
 *  copy files from local to jumpbox - run on local machine where sheepctl is
 ```
-scp resources/dnsmasq-install.sh kubo@$JUMPERIP:/home/kubo/
+scp -p resources/dnsmasq-install.sh kubo@$JUMPERIP:/home/kubo/
 scp resources/storageclass-tpsm.yaml kubo@$JUMPERIP:/home/kubo/
 scp resources/cluster-tpsm.yaml kubo@$JUMPERIP:/home/kubo/
 scp ${ENVNAME}.kubeconfig kubo@$JUMPERIP:/home/kubo/.kube/config
