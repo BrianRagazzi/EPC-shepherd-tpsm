@@ -22,16 +22,13 @@ sheepctl lock kubeconfig ${LOCKID} > ${ENVNAME}.kubeconfig
   - username = kubo
   - Password = sheepctl lock get ${LOCKID} -j |jq -r .outputs.vm.jumper.password
 
-* Password for vCenter (not pretty)
+* FQDN and Password for vCenter (not pretty)
+  - FQDN = sheepctl lock get $LOCKID | jq -r .vc[].systemPNID
   - Password = sheepctl lock get ${LOCKID}  | jq -r .vc[].password
 
 * Get jumpbox IP, export to envvar
 ```
 export JUMPERIP=$(sheepctl lock get ${LOCKID} -j |jq -r .outputs.vm.jumper.hostname)
-```
-* get FQDN for vCenter Server
-```
-sheepctl lock get $LOCKID | jq -r .vc[].systemPNID
 ```
 
 
