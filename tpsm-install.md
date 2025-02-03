@@ -51,6 +51,7 @@ scp ${ENVNAME}.kubeconfig kubo@$JUMPERIP:/home/kubo/.kube/config
 ssh kubo@$JUMPERIP
 ```
 * install dnsmasq
+
 ** this script differs slightly from the on in confluence docs in that it sets the listen-address to 0.0.0.0 **
 ```
 ~/dns-masq-install.sh
