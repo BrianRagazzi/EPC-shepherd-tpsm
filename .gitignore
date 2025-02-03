@@ -18,3 +18,4 @@ tls/
 .DS_Store
 scratch/
 *.json
+**/localAuthServer/**
