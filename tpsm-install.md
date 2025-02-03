@@ -44,13 +44,6 @@ scp resources/cluster-tpsm.yaml kubo@$JUMPERIP:/home/kubo/
 scp ${ENVNAME}.kubeconfig kubo@$JUMPERIP:/home/kubo/.kube/config
 ```
 
-# On vCenter UI
-
-* Create VMClass in testns namespace
-  * name: tpsm
-  * CPU: 8
-  * RAM: 32GB
-  * Reservation: none
 
 
 # Login to Jumpbox
@@ -94,8 +87,15 @@ sudo systemctl restart squid
   tar -xvf crashd_0.3.10_linux_amd64.tar.gz -C crashd_0.3.10_linux_amd64
   sudo mv crashd_0.3.10_linux_amd64/crashd  /usr/local/bin/crashd
   ```
+# On vCenter UI
 
-# Modify Supervisor Workload Network config
+## Create VMClass in testns namespace
+  * name: tpsm
+  * CPU: 8
+  * RAM: 32GB
+  * Reservation: none
+
+## Modify Supervisor Workload Network config
 The DNS for the workload network managed by the Supervisor is set to 192.19.189.10.  We need to change it to use our dnsmasq server on the jumpbox at 192.168.1.1.  
 * First, on the machine you ran shepctl on, grab the the hostname and password to access vCenter:
   * `jq '.outputs.vm["vc.0"]' ${ENVNAME}-access.json`
