@@ -58,6 +58,7 @@ scp ${ENVNAME}.kubeconfig kubo@$JUMPERIP:/home/kubo/.kube/config
 ssh kubo@$JUMPERIP
 ```
 * install dnsmasq
+** this script differs slightly from the on in confluence docs in that it sets the listen-address to 0.0.0.0 **
 ```
 ~/dns-masq-install.sh
 ```
@@ -100,7 +101,7 @@ The DNS for the workload network managed by the Supervisor is set to 192.19.189.
   * `jq '.outputs.vm["vc.0"]' ${ENVNAME}-access.json`
 * Go the the hostname (ip, actually) in your browser and login to vCenter as "administrator@vsphere.local" with the password you got from the previous command.
   * Go to Workload Management via the hamburger menu on the top left of the browser page.
-  * Click on the "Supervisors" tab under the "Workload Management" heading in the top, middle of the page. 
+  * Click on the "Supervisors" tab under the "Workload Management" heading in the top, middle of the page.
   * Click on the "tkgs-cls" Supervisor to open its details.
   * Click on the "Configure" tab in the resulting details page.
   * In the tree-view near the "Configure" tab you just clicked, under the "Supervisor" section of the tree, click "Network"
