@@ -5,8 +5,8 @@
 # Run on local machine where sheepctl is:
 * Set exports
 ```
-export LOCKID=d3e4d358-131d-4426-885a-2d2eac25bea1
-export ENVNAME=USFSI
+export LOCKID=0e450633-978c-4704-9432-f047731afbf5
+export ENVNAME=USEAST
 ```
 
 * get lock details
@@ -29,6 +29,11 @@ sheepctl lock kubeconfig ${LOCKID} > ${ENVNAME}.kubeconfig
 ```
 export JUMPERIP=$(sheepctl lock get ${LOCKID} -j |jq -r .outputs.vm.jumper.hostname)
 ```
+* get FQDN for vCenter Server
+```
+sheepctl lock get $LOCKID | jq -r .vc[].systemPNID
+```
+
 
 * Create a $HOME/.kube directory on the jumpbox
 ```
