@@ -52,16 +52,16 @@ ssh kubo@$JUMPERIP
 ```
 * install dnsmasq
 
-** this script differs slightly from the on in confluence docs in that it sets the listen-address to 0.0.0.0 **
-```
-~/dns-masq-install.sh
-```
+  **this script differs slightly from the on in confluence docs in that it sets the listen-address to 0.0.0.0**
+  ```
+  ~/dns-masq-install.sh
+  ```
 * add dns record for tanzu.platform.io
-```
-echo 'address=/tanzu.platform.io/192.168.0.4' | sudo tee /etc/dnsmasq.d/vlan-dhcp-dns.conf
-sudo systemctl restart dnsmasq
-sudo systemctl restart squid
-```
+  ```
+  echo 'address=/tanzu.platform.io/192.168.0.4' | sudo tee /etc/dnsmasq.d/vlan-dhcp-dns.conf
+  sudo systemctl restart dnsmasq
+  sudo systemctl restart squid
+  ```
 
 * Install prereqs on jumpbox
   * Carvel Tools
@@ -109,25 +109,25 @@ The DNS for the workload network managed by the Supervisor is set to 192.19.189.
   * In the "Network" page, there are a few expandable sections.  Click the section called "Workload Network" to expand it
   * Next to the DNS server, you will see the value of "192.19.189.10".  Click the "Edit" link next to that DNS value.  Update the DNS server to be 192.168.1.1, and click the "Save" button.
 
-# supervisor cluster - run on jumpbox
+# Supervisor cluster - run on jumpbox
 * confirm access to supervisor cluster
-```
-kubectl get ns testns
-```
+  ```
+  kubectl get ns testns
+  ```
 
 * Create Cluster & wait for ready
-```
-kubectl apply -n testns -f cluster-tpsm.yaml
-```
-  * wait for ready:
   ```
-  watch -n 30 kubectl get tanzukubernetescluster -n testns tpsm -ojsonpath='{.status.phase}'
+  kubectl apply -n testns -f cluster-tpsm.yaml
   ```
+    * wait for ready:
+    ```
+    watch -n 30 kubectl get tanzukubernetescluster -n testns tpsm -ojsonpath='{.status.phase}'
+    ```
 
 * get kubeconfig for tpsm cluster
-```
-kubectl get secret -n testns tpsm-kubeconfig -ojsonpath='{.data.value}' | base64 -d > tpsm-kubeconfig
-```
+  ```
+  kubectl get secret -n testns tpsm-kubeconfig -ojsonpath='{.data.value}' | base64 -d > tpsm-kubeconfig
+  ```
 
 * Merge kubeconfig
   * set KUBECONFIG env var:
@@ -140,19 +140,19 @@ kubectl get secret -n testns tpsm-kubeconfig -ojsonpath='{.data.value}' | base64
   `cp combo.config ~/.kube/config`
 
 * Change context to tpsm cluster
-```
-kubectl config use-context tpsm-admin@tpsm
-```
+  ```
+  kubectl config use-context tpsm-admin@tpsm
+  ```
 # Prepare target cluster
 Make sure your context is tpsm-admin@tpsm
 * Install cert-manager
-```
-kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.16.2/cert-manager.yaml
-```
+  ```
+  kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.16.2/cert-manager.yaml
+  ```
 * Create tpsm storageClass
-```
-kubectl apply -f storageclass-tpsm.yaml
-```
+  ```
+  kubectl apply -f storageclass-tpsm.yaml
+  ```
 * install Kapp controller
   * check to see if kapp controller exists:
   `kubectl get po -A -l app=kapp-controller`
@@ -162,9 +162,9 @@ kubectl apply -f storageclass-tpsm.yaml
   ```
 
 * Install SecretGen Controller
-```
-kapp deploy -a sg -f https://github.com/carvel-dev/secretgen-controller/releases/latest/download/release.yml
-```
+  ```
+  kapp deploy -a sg -f https://github.com/carvel-dev/secretgen-controller/releases/latest/download/release.yml
+  ```
 
 
 # Install TPSM - run on jumpbox
@@ -174,7 +174,7 @@ If you don't have access to get your identity token, you may need to request acc
 ```
 export ARTIFACTORY_USER=jd123456 # broadcom user ID
 export ARTIFACTORY_API_TOKEN=abc123 # Identity token from https://usw1.packages.broadcom.com/ui/user_profile
-export TANZU_SM_VERSION=10.0.0-oct-2024-rc.533-vc0bb325
+export TANZU_SM_VERSION=10.0.0-oct-2024-rc.533-vc0bb325 # This is the October 10.0 release, set as needed
 export DOCKER_REGISTRY=tis-tanzuhub-sm-docker-dev-local.usw1.packages.broadcom.com
 
 curl -u ${ARTIFACTORY_USER}:${ARTIFACTORY_API_TOKEN} https://usw1.packages.broadcom.com/artifactory/tis-tanzuhub-sm-docker-dev-local/hub-self-managed/${TANZU_SM_VERSION}/releases/non-airgapped/tanzu-self-managed-${TANZU_SM_VERSION}-linux-amd64.tar.gz --output tanzu-self-managed-${TANZU_SM_VERSION}.tar.gz
