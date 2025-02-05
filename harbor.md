@@ -18,7 +18,7 @@
 
 * Create self-signed cert
   ```
-  sudo openssl req -x509 -nodes -days 365 -subj "/CN=harbor.platform.io/C=US/ST=CA/L=Palo Alto/O=Broadcom/OU=Tanzu" -newkey rsa:2048 -keyout /harbor/cert/selfsigned.key -out /harbor/cert/selfsigned.crt
+  sudo openssl req -x509 -nodes -days 365 -subj "/CN=harbor.platform.io/C=US/ST=CA/L=Palo Alto/O=Broadcom/OU=Tanzu" -addext "subjectAltName=DNS:harbor.platform.io" -newkey rsa:2048 -keyout /harbor/cert/selfsigned.key -out /harbor/cert/selfsigned.crt
   ```
 
 * Create/edit/copy harbor.yml
