@@ -181,6 +181,9 @@ Make sure your context is tpsm-admin@tpsm
   ```
 
 * Install SecretGen Controller
+  * check to see if SecretGen controller exists:
+  `kubectl get po -A -l app=secretgen-controller`
+  * if it does not, install it
   ```
   kapp deploy -a sg -f https://github.com/carvel-dev/secretgen-controller/releases/latest/download/release.yml
   ```
