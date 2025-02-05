@@ -48,6 +48,15 @@ scp resources/cluster-tpsm.yaml kubo@$JUMPERIP:/home/kubo/
 scp ${ENVNAME}.kubeconfig kubo@$JUMPERIP:/home/kubo/.kube/config
 ```
 
+## Configure Firefox to use Proxy - necessary to reach vCenter and TPSM
+Use firefox on local machine: Set Network Settings as follows:
+
+* Select Manual proxy configuration
+  * HTTP Proxy:  $JUMPERIP
+  * port: 443
+  * Also use this proxy for HTTPS
+* No proxy for ".mozilla.org, mozilla.com, google.com,127.0.0.1/8"
+* Proxy DNS when using SOCKS v4
 
 
 # Login to Jumpbox
@@ -60,17 +69,10 @@ ssh kubo@$JUMPERIP
   sudo systemctl restart squid
   ```
 
-* install dnsmasq
-
-  **this script differs slightly from the on in confluence docs in that it sets the listen-address to 0.0.0.0**
-  ```
-  ~/dns-masq-install.sh
-  ```
 * add dns record for tanzu.platform.io
   ```
   echo 'address=/tanzu.platform.io/192.168.0.4' | sudo tee /etc/dnsmasq.d/vlan-dhcp-dns.conf
   sudo systemctl restart dnsmasq
-  sudo systemctl restart squid
   ```
 
 * Install prereqs on jumpbox
@@ -99,6 +101,9 @@ ssh kubo@$JUMPERIP
   sudo mv crashd_0.3.10_linux_amd64/crashd  /usr/local/bin/crashd
   ```
 # On vCenter UI
+
+
+
 
 ## Create VMClass in testns namespace
   * name: tpsm
@@ -234,17 +239,10 @@ Looking to see **Success: The hostname 'tanzu.platform.io' resolves to 192.168.1
   * `kubectl get pkgi -n tanzusm`
 
 
+
+
 ## Connect
-Use firefox on local machine: Set Network Settings as follows:
-
-* Select Manual proxy configuration
-  * HTTP Proxy:  $JUMPERIP
-  * port: 443
-  * Also use this proxy for HTTPS
-* No proxy for ".mozilla.org, mozilla.com, google.com,127.0.0.1/8"
-* Proxy DNS when using SOCKS v4
-
-**Browse to https://tanzu.platform.io in Firefox**
+**Browse to https://tanzu.platform.io in Firefox (configured for proxy)**
 
 
 
