@@ -10,7 +10,7 @@ spec:
       storageClass: tkgs-k8s-obj-policy
       tkr:
         reference:
-          name: v1.28.7---vmware.1-fips.1-tkg.1
+          name: v1.28.8---vmware.1-fips.1-tkg.2
       volumes:
         - name: kubelet
           mountPath: /var/lib/kubelet
@@ -27,7 +27,7 @@ spec:
         storageClass: tkgs-k8s-obj-policy
         tkr:
           reference:
-            name: v1.28.7---vmware.1-fips.1-tkg.1
+            name: v1.28.8---vmware.1-fips.1-tkg.2
         volumes:
           - name: kubelet
             mountPath: /var/lib/kubelet
