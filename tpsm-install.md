@@ -22,7 +22,9 @@ sheepctl lock kubeconfig ${LOCKID} > ${ENVNAME}.kubeconfig
   - username = kubo
   - Password = sheepctl lock get ${LOCKID} -j |jq -r .outputs.vm.jumper.password
 
-* FQDN and Password for vCenter (not pretty)
+* FQDN/IP and Password for vCenter (not pretty)
+  - IP = sheepctl lock get $LOCKID | jq -r .vc[].systemPNID
+    * note:  **if your vCenter IP begins with 192.168, you'll have to use the proxy to reach it<br>If it begins with 10, you should be able to reach it via FQDN**
   - FQDN = sheepctl lock get $LOCKID | jq -r .vc[].systemPNID
   - Password = sheepctl lock get ${LOCKID}  | jq -r .vc[].password
 
@@ -52,6 +54,12 @@ scp ${ENVNAME}.kubeconfig kubo@$JUMPERIP:/home/kubo/.kube/config
 ```
 ssh kubo@$JUMPERIP
 ```
+* update squid proxy port
+  ```
+  sudo sed -i 's|http_port 3128|http_port 443|g' /etc/squid/squid.conf
+  sudo systemctl restart squid
+  ```
+
 * install dnsmasq
 
   **this script differs slightly from the on in confluence docs in that it sets the listen-address to 0.0.0.0**
