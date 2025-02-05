@@ -7,7 +7,7 @@ sheepctl target set -u https://epc-shepherd.lvn.broadcom.net -n Tanzu-Sales
 ```
 ## Get a lock
 ```
-sheepctl pool lock TKGs-Non-Airgapped -n Tanzu-Sales --lifetime 5d --description 'Used by EPC TSL'
+sheepctl pool lock TKGS-3.0.0-VC-8u3-Non-Airgap -n Tanzu-Sales --lifetime 5d --description 'Team (Person)'
 ```
 
 ## List Locks
