@@ -72,6 +72,7 @@ ssh kubo@$JUMPERIP
 * add dns record for tanzu.platform.io
   ```
   echo 'address=/tanzu.platform.io/192.168.116.206' | sudo tee -a /etc/dnsmasq.d/vlan-dhcp-dns.conf
+  echo 'address=/harbor.platform.io/192.168.116.1' | sudo tee -a /etc/dnsmasq.d/vlan-dhcp-dns.conf
   sudo systemctl restart dnsmasq
   ```
 
@@ -253,8 +254,22 @@ Looking to see **Success: The hostname 'tanzu.platform.io' resolves to 192.168.1
 **Browse to https://tanzu.platform.io in Firefox (configured for proxy)**
 
 
-
-
+## Prepare tanzu cli on jumpbox
+* Check version
+  `tanzu version`
+* initialize
+  `tanzu plugin group search`
+  then follow prompts
+* install plugin groups:
+  * `tanzu plugin install --group vmware-tanzucli/essentials`
+  * `tanzu plugin install --group vmware-tanzu/platform-engineer`
+  * `tanzu plugin install --group vmware-tanzu/app-developer`
+* log tanzu cli into Tanzu Platform
+  * `tanzu login --endpoint https://tanzu.platform.io --insecure-skip-tls-verify`
+  * copy link that is created by the command
+  * paste that link into firefox, go
+  * in the resulting error page in firefox, examine the URL, select and copy the **code** value from the URL
+  * paste the code value at the cli prompt as the authorization code
 
 
 # tear down
