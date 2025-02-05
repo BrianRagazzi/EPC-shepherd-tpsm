@@ -6,7 +6,7 @@ spec:
   topology:
     controlPlane:
       replicas: 1
-      vmClass: tpsm
+      vmClass: best-effort-medium
       storageClass: tkgs-k8s-obj-policy
       tkr:
         reference:
@@ -15,11 +15,11 @@ spec:
         - name: kubelet
           mountPath: /var/lib/kubelet
           capacity:
-            storage: 80Gi
+            storage: 10Gi
         - name: containerd
           mountPath: /var/lib/containerd
           capacity:
-            storage: 40Gi
+            storage: 50Gi
     nodePools:
       - replicas: 6
         name: worker-np
@@ -32,11 +32,11 @@ spec:
           - name: kubelet
             mountPath: /var/lib/kubelet
             capacity:
-              storage: 80Gi
+              storage: 10Gi
           - name: containerd
             mountPath: /var/lib/containerd
             capacity:
-              storage: 40Gi
+              storage: 50Gi
   settings:
     network:
       cni:
