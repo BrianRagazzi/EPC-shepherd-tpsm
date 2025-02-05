@@ -71,7 +71,7 @@ ssh kubo@$JUMPERIP
 
 * add dns record for tanzu.platform.io
   ```
-  echo 'address=/tanzu.platform.io/192.168.116.206' | sudo tee /etc/dnsmasq.d/vlan-dhcp-dns.conf
+  echo 'address=/tanzu.platform.io/192.168.116.206' | sudo tee -a /etc/dnsmasq.d/vlan-dhcp-dns.conf
   sudo systemctl restart dnsmasq
   ```
 
@@ -213,6 +213,7 @@ sed -i 's|profile: foundation|profile: evaluation|' tpsm/config.yaml
 sed -i 's|loadBalancerIP: ""|loadBalancerIP: "192.168.116.206"|' tpsm/config.yaml
 sed -i 's|host: ""|host: "tanzu.platform.io"|' tpsm/config.yaml
 sed -i 's|storageClass: ""|storageClass: "tpsm"|g' tpsm/config.yaml
+sed -i '42 s|allowInsecureConnections: false|allowInsecureConnections: true|' tpsm/config.yaml
 sed -i ' 80 s|password: ""|password: "admin123"|' tpsm/config.yaml
 sed -i ' 153 s|name: ""|name: "tanzu-sales"|' tpsm/config.yaml
 sed -i 's|#  oauthProviders:|  oauthProviders:|g' tpsm/config.yaml
