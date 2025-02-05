@@ -111,8 +111,8 @@ ssh kubo@$JUMPERIP
   * RAM: 32GB
   * Reservation: none
 
-## Modify Supervisor Workload Network config
-The DNS for the workload network managed by the Supervisor is set to 192.19.189.10.  We need to change it to use our dnsmasq server on the jumpbox at 192.168.1.1.  
+## Verify Supervisor Workload Network config
+The DNS for the workload network managed by the Supervisor should be set to 192.168.117.1 - one of the interfaces on the jumpbox.  If it is not, we need to change it to use our dnsmasq server on the jumpbox.  
 * First, on the machine you ran shepctl on, grab the the hostname and password to access vCenter:
   * `jq '.outputs.vm["vc.0"]' ${ENVNAME}-access.json`
 * Go the the hostname (ip, actually) in your browser and login to vCenter as "administrator@vsphere.local" with the password you got from the previous command.
@@ -122,7 +122,11 @@ The DNS for the workload network managed by the Supervisor is set to 192.19.189.
   * Click on the "Configure" tab in the resulting details page.
   * In the tree-view near the "Configure" tab you just clicked, under the "Supervisor" section of the tree, click "Network"
   * In the "Network" page, there are a few expandable sections.  Click the section called "Workload Network" to expand it
-  * Next to the DNS server, you will see the value of "192.19.189.10".  Click the "Edit" link next to that DNS value.  Update the DNS server to be 192.168.1.1, and click the "Save" button.
+  * Next to the DNS server, click the "Edit" link next to that DNS value.  Update the DNS server to be 192.168.117.1, and click the "Save" button.
+* repeat for the DNS Server value in the Management network, but it should be set to 192.168.116.1 instead
+
+![Management Network DNS](images/supe-net-mgmt-dns.png)<br>
+![Workload Network DNS](images/supe-net-workload-dns.png)
 
 # Supervisor cluster - run on jumpbox
 * confirm access to supervisor cluster
