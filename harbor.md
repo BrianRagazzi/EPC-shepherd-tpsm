@@ -1,9 +1,9 @@
 # Install harbor on jumpbox
 
 * Download Harbor bits
-```
-curl -L https://github.com/goharbor/harbor/releases/download/v2.12.2/harbor-offline-installer-v2.12.2.tgz --output harbor-offline-installer-v2.12.2.tgz
-```
+  ```
+  curl -L https://github.com/goharbor/harbor/releases/download/v2.12.2/harbor-offline-installer-v2.12.2.tgz --output harbor-offline-installer-v2.12.2.tgz
+  ```
 
 * Extract tar
   ```
