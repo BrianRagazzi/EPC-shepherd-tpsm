@@ -86,7 +86,7 @@ spec:
           value: password
         - name: LDAP_CUSTOM_LDIF_DIR
           value: /ldifs
-        image: bitnami/openldap
+        image: harbor.platform.io:8443/library/openldap:latest
         imagePullPolicy: IfNotPresent
         name: openldap
         ports:
@@ -106,6 +106,8 @@ spec:
       schedulerName: default-scheduler
       securityContext: {}
       terminationGracePeriodSeconds: 30
+      imagePullSecrets:
+      - name: harbor
       volumes:
       - configMap:
           defaultMode: 420
