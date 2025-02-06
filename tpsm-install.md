@@ -72,12 +72,13 @@ ssh kubo@$JUMPERIP
   ```
 * install dnsmasq if not alredy installed (AVI template seems to already have DNSmasq)
   * check whether DNS masq is already installed and configured on your jumpbox. `ls /etc/dnsmasq.d`  Run this script if this folder and configurations do not aleady exist.
+
   **this script differs slightly from the on in confluence docs in that it sets the listen-address to 0.0.0.0**
   ```
   ~/dns-masq-install.sh
   ```
 
-* add dns record for tanzu.platform.io
+* add dns record for tanzu.platform.io (and harbor.platform.io if using it)
   ```
   echo 'address=/tanzu.platform.io/192.168.116.206' | sudo tee -a /etc/dnsmasq.d/vlan-dhcp-dns.conf
   echo 'address=/harbor.platform.io/192.168.116.1' | sudo tee -a /etc/dnsmasq.d/vlan-dhcp-dns.conf
