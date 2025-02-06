@@ -224,7 +224,6 @@ tar -xzvf tanzu-self-managed-${TANZU_SM_VERSION}.tar.gz -C ./tpsm
 ```
 ## Update config.yaml
 
-**note:** This configuration uses an okta client - not yet working (2/6/25)
 ```
 sed -i 's|profile: foundation|profile: evaluation|' tpsm/config.yaml
 sed -i 's|loadBalancerIP: ""|loadBalancerIP: "192.168.116.206"|' tpsm/config.yaml
@@ -233,6 +232,11 @@ sed -i 's|storageClass: ""|storageClass: "tpsm"|g' tpsm/config.yaml
 sed -i '42 s|allowInsecureConnections: false|allowInsecureConnections: true|' tpsm/config.yaml
 sed -i ' 80 s|password: ""|password: "admin123"|' tpsm/config.yaml
 sed -i ' 153 s|name: ""|name: "tanzu-sales"|' tpsm/config.yaml
+```
+### Option 1 - Okta client (run this option *or* option 2, but not both)
+
+**note:** This configuration uses an okta client - not yet working (2/6/25)
+```
 sed -i 's|#  oauthProviders:|  oauthProviders:|g' tpsm/config.yaml
 sed -i ' 92 s|#    - name: ""|    - name: "okta.test"|' tpsm/config.yaml
 sed -i ' 97 s|#      configUrl: ""|      configUrl: "https://dev-70846880.okta.com/.well-known/openid-configuration"|'  tpsm/config.yaml
@@ -245,6 +249,27 @@ sed -i ' 109 s|#      attributeMappings:|      attributeMappings:|' tpsm/config.
 sed -i ' 111 s|#        username: ""|        username: "email"|' tpsm/config.yaml
 sed -i ' 113 s|#        groups: ""|        groups: "groups"|' tpsm/config.yaml
 ```
+
+### Option 2 - Local OpenLDAP - requires openLDAP service and local Harbor (run this option *or* option 1, but not both)
+
+* Requires openLDAP [Install openLDAP](openldap.md), which requires Harbor [Install harbor on jumpbox](harbor.md)
+
+```
+sed -i ' 117 s|#  ldap:|  ldap:|' tpsm/config.yaml
+sed -i ' 119 s|#    url: ""|    url: "ldap://openldap.openldap:389/"|' tpsm/config.yaml
+sed -i ' 124 s|#    credentials:|    credentials:|' tpsm/config.yaml
+sed -i ' 126 s|#      userDN: ""|      userDN: "cn=admin,dc=tanzu,dc=net"|' tpsm/config.yaml
+sed -i ' 128 s|#      password: ""|      password: "password"|' tpsm/config.yaml
+sed -i ' 130 s|#    users:|    users:|' tpsm/config.yaml
+sed -i ' 132 s|#      baseDN: ""|      baseDN: "dc=tanzu,dc=net"|' tpsm/config.yaml
+sed -i ' 136 s|#      searchFilter: ""|      searchFilter: "cn={0}"|' tpsm/config.yaml
+sed -i ' 138 s|#      mailAttribute: "mail"|      mailAttribute: "mail"|' tpsm/config.yaml
+sed -i ' 140 s|#    groups:|    groups:|' tpsm/config.yaml
+sed -i ' 142 s|#      baseDN: ""|      baseDN: "dc=tanzu,dc=net"|' tpsm/config.yaml
+sed -i ' 144 s|#      searchFilter: ""|      searchFilter: "member={0}"|' tpsm/config.yaml
+sed -i ' 146 s|#      searchDepth: 10|      searchDepth: 10|' tpsm/config.yaml
+```
+
 
 ## verify
 ```
