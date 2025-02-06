@@ -144,6 +144,9 @@ The DNS for the workload network managed by the Supervisor should be set to 192.
   kubectl get ns testns
   ```
 
+* If you prefer to use local openLDAP, please install harbor on jumpbox first.
+  Steps found here: [Install harbor on jumpbox](harbor.md)
+
 * Create Cluster & wait for ready
   ```
   kubectl apply -n testns -f cluster-tpsm.yaml
@@ -197,6 +200,8 @@ Make sure your context is tpsm-admin@tpsm
   ```
   kapp deploy -a sg -f https://github.com/carvel-dev/secretgen-controller/releases/latest/download/release.yml
   ```
+* If you prefer to use local openLDAP, please install it before TPSM
+  Steps found here: [Install openLDAP](openldap.md)
 
 
 # Install TPSM - run on jumpbox
