@@ -46,3 +46,29 @@
 
 * Connect!
   * Use Firefox with proxy to browse to https://harbor.platform.io
+
+
+## Update TanzuServiceConfiguration to trust Harbor cert
+* Switch context to Supervisor cluster
+  ```
+  kubectl config use-context kubernetes-admin@kubernetes
+  ```
+* Create TanzuServiceConfiguration:
+  ```
+  harborcert=$(cat /harbor/cert/selfsigned.crt |base64 -w 0) bash -c "cat > TanzuServiceConfiguration.yaml" <<EOF
+  apiVersion: run.tanzu.vmware.com/v1alpha1
+  kind: TkgServiceConfiguration
+  metadata:
+    name: tkg-service-configuration
+  spec:
+    defaultCNI: antrea
+    trust:
+      additionalTrustedCAs:
+        - name: harborcert
+          data: $harborcert
+  EOF
+  ```
+* Apply TanzuServiceConfiguration:
+  ```
+  kubetl apply -f TanzuServiceConfiguration.yaml
+  ```
