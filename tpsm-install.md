@@ -223,6 +223,8 @@ mkdir ./tpsm
 tar -xzvf tanzu-self-managed-${TANZU_SM_VERSION}.tar.gz -C ./tpsm
 ```
 ## Update config.yaml
+
+**note:** This configuration uses an okta client - not yet working (2/6/25)
 ```
 sed -i 's|profile: foundation|profile: evaluation|' tpsm/config.yaml
 sed -i 's|loadBalancerIP: ""|loadBalancerIP: "192.168.116.206"|' tpsm/config.yaml
